@@ -77,4 +77,23 @@ router.put(
   },
 );
 
+// Requisito 07
+router.delete('/:id',
+  tokenValidation,
+  async (req, res) => {
+    const { id } = req.params;
+
+    const talkers = await fs.read();
+    const findTalker = talkers.find((current) => current.id === Number(id));
+
+    if (findTalker) {
+      const i = talkers.indexOf(findTalker);
+      talkers.splice(i, 1);
+
+      await fs.write(talkers);
+
+      return res.sendStatus(204);
+    }
+});
+
 module.exports = router;
