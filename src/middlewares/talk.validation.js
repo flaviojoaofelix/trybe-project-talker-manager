@@ -3,7 +3,7 @@ const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 const rateValidation = (rate) => {
   const validRates = [1, 2, 3, 4, 5];
   
-  if (!rate) {
+  if (!rate && typeof rate !== 'number') {
     return ({ message: 'O campo "rate" é obrigatório' });
   }
 
