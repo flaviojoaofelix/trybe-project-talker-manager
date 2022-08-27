@@ -13,6 +13,16 @@ const read = async () => {
   }
 };
 
+const write = async (content) => {
+  try {
+    await fs.writeFile(file, JSON.stringify(content));
+  } catch (error) {
+    console.error(error);
+    return error.message;
+  }
+};
+
 module.exports = {
   read,
+  write,
 };
