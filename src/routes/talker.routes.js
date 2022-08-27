@@ -15,6 +15,28 @@ router.get('/', async (req, res) => {
   res.status(200).json(talkers);
 });
 
+// Requisito 08
+router.get('/search',
+  tokenValidation,
+  async (req, res) => {
+    const { q } = req.query;
+
+    const talkers = await fs.read();
+
+    if (!q) {
+      return res.status(200).json(talkers);
+    }
+
+    const talker = talkers
+      .filter((current) => current.name.includes(q));
+
+    if (!talker) {
+      return res.status(200).json([]);
+    }
+
+    return res.status(200).json(talker);
+});
+
 // Requisito 02
 router.get('/:id', async (req, res) => {
   const talkers = await fs.read();
@@ -27,8 +49,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Requisito 05
-router.post(
-  '/',
+router.post('/',
   tokenValidation,
   nameValidation,
   ageValidation,
@@ -48,12 +69,10 @@ router.post(
     await fs.write(updatedTalkers);
 
     return res.status(201).json(talker);
-  },
-);
+  });
 
 // Requisito 06
-router.put(
-  '/:id',
+router.put('/:id',
   tokenValidation,
   nameValidation,
   ageValidation,
@@ -74,8 +93,7 @@ router.put(
 
       return res.status(200).json(talker);
     }
-  },
-);
+  });
 
 // Requisito 07
 router.delete('/:id',
@@ -94,6 +112,6 @@ router.delete('/:id',
 
       return res.sendStatus(204);
     }
-});
+  });
 
 module.exports = router;
